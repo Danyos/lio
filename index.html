@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YourSite — Turn Instagram Into a Shop</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <style>
+        :root {
+            --brand-dark: #0f172a;
+            --brand-dark-2: #111827;
+            --brand-primary: #2563eb;
+            --brand-primary-soft: rgba(37, 99, 235, 0.12);
+            --brand-success: #16a34a;
+            --brand-warning: #f59e0b;
+            --brand-danger: #ef4444;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --bg-soft: #f8fafc;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-card: 0 12px 40px rgba(15, 23, 42, 0.10);
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--text-main);
+            background: #fff;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .section-space {
+            padding: 90px 0;
+        }
+
+        .section-title {
+            font-size: clamp(1.9rem, 3vw, 3rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 18px 0;
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--brand-dark);
+            font-size: 1.4rem;
+        }
+
+        .navbar-brand span {
+            color: var(--brand-primary);
+        }
+
+        .nav-link {
+            color: #334155 !important;
+            font-weight: 500;
+        }
+
+        .btn-brand {
+            background: var(--brand-primary);
+            color: #fff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .btn-brand:hover {
+            background: #1d4ed8;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .btn-soft {
+            background: var(--brand-primary-soft);
+            color: var(--brand-primary);
+            border: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .btn-soft:hover {
+            background: rgba(37, 99, 235, 0.18);
+            color: var(--brand-primary);
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            padding: 140px 0 100px;
+            overflow: hidden;
+            background:
+                    radial-gradient(circle at top right, rgba(37,99,235,0.12), transparent 24%),
+                    radial-gradient(circle at top left, rgba(22,163,74,0.08), transparent 20%),
+                    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.3rem, 5vw, 4.5rem);
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: -1.6px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title .accent {
+            color: var(--brand-primary);
+        }
+
+        .hero-text {
+            font-size: 1.08rem;
+            line-height: 1.85;
+            color: var(--text-muted);
+            max-width: 620px;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .hero-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-mini-item {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: 0.92rem;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .hero-card {
+            background: #fff;
+            border: 1px solid rgba(226,232,240,0.9);
+            border-radius: 28px;
+            padding: 22px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+        }
+
+        .browser-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e1;
+        }
+
+        .fake-url {
+            flex: 1;
+            background: #f1f5f9;
+            border-radius: 10px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            color: #475569;
+            font-size: 0.92rem;
+            overflow: hidden;
+        }
+
+        .shop-preview {
+            border-radius: 22px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+        }
+
+        .shop-cover {
+            background: linear-gradient(120deg, #2563eb, #0f172a);
+            min-height: 140px;
+            position: relative;
+        }
+
+        .shop-logo {
+            position: absolute;
+            left: 22px;
+            bottom: -26px;
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: var(--shadow-soft);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: var(--brand-primary);
+            font-size: 1.2rem;
+            border: 4px solid #fff;
+        }
+
+        .shop-body {
+            padding: 42px 20px 20px;
+        }
+
+        .shop-name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .shop-meta {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .category-pills span {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 999px;
+        }
+
+        .product-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .product-mini {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .product-mini-image {
+            height: 90px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            margin-bottom: 10px;
+        }
+
+        .product-mini-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .product-mini-price {
+            font-size: 0.9rem;
+            color: var(--brand-primary);
+            font-weight: 700;
+        }
+
+        /* Stats */
+        .stats-wrap {
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            height: 100%;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-number {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+        }
+
+        /* Features */
+        .feature-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            padding: 28px;
+            box-shadow: var(--shadow-soft);
+            height: 100%;
+            transition: 0.25s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: var(--brand-primary-soft);
+            color: var(--brand-primary);
+            font-size: 1.35rem;
+            margin-bottom: 18px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .feature-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* Shops */
+        .shops-section {
+            background: var(--bg-soft);
+        }
+
+        .shop-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 22px;
+            overflow: hidden;
+            height: 100%;
+            box-shadow: var(--shadow-soft);
+            transition: 0.25s ease;
+        }
+
+        .shop-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .shop-card-cover {
+            height: 150px;
+            background: linear-gradient(135deg, #1d4ed8, #0f172a);
+            position: relative;
+        }
+
+        .shop-card-logo {
+            position: absolute;
+            left: 20px;
+            bottom: -22px;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: #fff;
+            border: 4px solid #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: var(--brand-primary);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .shop-card-body {
+            padding: 34px 20px 20px;
+        }
+
+        .shop-card-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .shop-card-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            min-height: 76px;
+        }
+
+        .shop-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .shop-tags span {
+            background: #f1f5f9;
+            color: #334155;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        /* Launch offer */
+        .offer-box {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            border-radius: 28px;
+            padding: 34px;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .offer-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .offer-title {
+            font-size: clamp(1.7rem, 3vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+
+        .offer-text {
+            color: rgba(255,255,255,0.78);
+            line-height: 1.8;
+            margin-bottom: 28px;
+            max-width: 680px;
+        }
+
+        .offer-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .offer-item {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .offer-item strong {
+            display: block;
+            font-size: 1rem;
+        }
+
+        .offer-item span {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.92rem;
+        }
+
+        .spots-badge {
+            background: #fff;
+            color: var(--brand-danger);
+            font-weight: 800;
+            border-radius: 999px;
+            padding: 8px 14px;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+        /* Pricing */
+        .price-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            height: 100%;
+            transition: 0.25s ease;
+            position: relative;
+        }
+
+        .price-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .price-card.featured {
+            border: 2px solid var(--brand-primary);
+        }
+
+        .price-top-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--brand-primary);
+            color: #fff;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .price-name {
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .price-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .price-value span {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .price-desc {
+            color: var(--text-muted);
+            margin-bottom: 22px;
+            line-height: 1.8;
+        }
+
+        .price-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 26px;
+        }
+
+        .price-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #334155;
+        }
+
+        .price-list i {
+            color: var(--brand-success);
+            margin-top: 2px;
+        }
+
+        /* CTA */
+        .cta-box {
+            background: linear-gradient(135deg, #eff6ff, #ffffff);
+            border: 1px solid #dbeafe;
+            border-radius: 28px;
+            padding: 36px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .cta-title {
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+
+        .cta-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 760px;
+            margin: 0 auto 26px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--brand-dark);
+            color: rgba(255,255,255,0.82);
+            padding: 34px 0;
+        }
+
+        .footer-brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .footer-brand span {
+            color: #60a5fa;
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.65);
+            margin: 10px 0 0;
+            line-height: 1.7;
+        }
+
+        /* Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: all 0.7s ease;
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 991px) {
+            .hero {
+                padding-top: 120px;
+            }
+
+            .section-space {
+                padding: 70px 0;
+            }
+
+            .hero-text {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .hero-card {
+                padding: 16px;
+                border-radius: 22px;
+            }
+
+            .product-mini-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-box,
+            .cta-box,
+            .price-card,
+            .feature-card,
+            .shop-card {
+                border-radius: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Your<span>Site</span></a>
+
+        <button
+                class="navbar-toggler border-0 shadow-none"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNav"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav mx-auto mb-3 mb-lg-0 gap-lg-3">
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#shops">Shops</a></li>
+                <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link" href="#launch">Launch Offer</a></li>
+            </ul>
+
+            <div class="d-flex gap-2">
+                <a href="#shops" class="btn btn-soft">View Shops</a>
+                <a href="#pricing" class="btn btn-brand">Start Free Trial</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="reveal">
+                    <div class="hero-badge">
+                        <i class="bi bi-stars"></i>
+                        Turn your Instagram page into a real shop
+                    </div>
+
+                    <h1 class="hero-title">
+                        Build <span class="accent">your shop page</span><br />
+                        in minutes, not months
+                    </h1>
+
+                    <p class="hero-text">
+                        YourSite helps small brands and Instagram shops create a clean online page
+                        with products, categories, social links, and instant order requests —
+                        all without needing a developer.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#pricing" class="btn btn-brand btn-lg">Start Free Trial</a>
+                        <a href="#shops" class="btn btn-soft btn-lg">See Example Shops</a>
+                    </div>
+
+                    <div class="hero-mini">
+                        <div class="hero-mini-item"><i class="bi bi-check-circle-fill text-success me-2"></i>30-day free trial</div>
+                        <div class="hero-mini-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Easy setup</div>
+                        <div class="hero-mini-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Orders go directly to you</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-card reveal">
+                    <div class="browser-top">
+                        <div class="browser-dot"></div>
+                        <div class="browser-dot"></div>
+                        <div class="browser-dot"></div>
+                        <div class="fake-url">yoursite.am/pvk</div>
+                    </div>
+
+                    <div class="shop-preview">
+                        <div class="shop-cover">
+                            <div class="shop-logo">PVK</div>
+                        </div>
+                        <div class="shop-body">
+                            <div class="shop-name">PVK Fashion</div>
+                            <div class="shop-meta">Modern boutique page with product menu and quick order flow</div>
+
+                            <div class="category-pills">
+                                <span>New Arrivals</span>
+                                <span>Shoes</span>
+                                <span>Dresses</span>
+                                <span>Accessories</span>
+                            </div>
+
+                            <div class="product-mini-grid">
+                                <div class="product-mini">
+                                    <div class="product-mini-image"></div>
+                                    <div class="product-mini-name">White Sneakers</div>
+                                    <div class="product-mini-price">18,000 ֏</div>
+                                </div>
+                                <div class="product-mini">
+                                    <div class="product-mini-image"></div>
+                                    <div class="product-mini-name">Beige Bag</div>
+                                    <div class="product-mini-price">14,500 ֏</div>
+                                </div>
+                                <div class="product-mini">
+                                    <div class="product-mini-image"></div>
+                                    <div class="product-mini-name">Summer Dress</div>
+                                    <div class="product-mini-price">22,000 ֏</div>
+                                </div>
+                                <div class="product-mini">
+                                    <div class="product-mini-image"></div>
+                                    <div class="product-mini-name">Classic Heels</div>
+                                    <div class="product-mini-price">19,000 ֏</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 stats-wrap">
+            <div class="col-md-4">
+                <div class="stat-card reveal">
+                    <div class="stat-number">3 min</div>
+                    <div class="stat-label">To launch your basic shop page</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card reveal">
+                    <div class="stat-number">1 link</div>
+                    <div class="stat-label">For your Instagram bio, ads and messages</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card reveal">
+                    <div class="stat-number">10,000 ֏</div>
+                    <div class="stat-label">Simple monthly plan after trial</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="section-space" id="features">
+    <div class="container">
+        <div class="text-center mb-5 reveal">
+            <h2 class="section-title">Everything an Instagram shop needs</h2>
+            <p class="section-subtitle">
+                YourSite is built for brands that sell through Instagram, Telegram, WhatsApp or direct messages
+                and want one clean place for products and orders.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i class="bi bi-shop-window"></i></div>
+                    <h3 class="feature-title">Your own branded page</h3>
+                    <p class="feature-text">
+                        Add your logo, cover image, brand name and a short description to create a clean online presence.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i class="bi bi-grid-1x2"></i></div>
+                    <h3 class="feature-title">Custom menu & categories</h3>
+                    <p class="feature-text">
+                        Organize your products by categories so customers can find what they need much faster.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i class="bi bi-bag-heart"></i></div>
+                    <h3 class="feature-title">Product showcase</h3>
+                    <p class="feature-text">
+                        Upload product images, add prices, write descriptions and attach external links like Instagram or WB.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i class="bi bi-phone"></i></div>
+                    <h3 class="feature-title">All social platforms visible</h3>
+                    <p class="feature-text">
+                        Show your Instagram, Telegram, WhatsApp and other important links directly on your page.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i class="bi bi-ui-checks-grid"></i></div>
+                    <h3 class="feature-title">Quick order flow</h3>
+                    <p class="feature-text">
+                        Customers select a product and leave their contact information in seconds without a complicated checkout.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i class="bi bi-inboxes"></i></div>
+                    <h3 class="feature-title">Orders go directly to you</h3>
+                    <p class="feature-text">
+                        Every request is connected to your shop so your team can see incoming product inquiries clearly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shops -->
+<section class="section-space shops-section" id="shops">
+    <div class="container">
+        <div class="text-center mb-5 reveal">
+            <h2 class="section-title">Featured shop pages</h2>
+            <p class="section-subtitle">
+                Explore how brands can look on YourSite and how easy it is for customers to browse products and place an order.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="shop-card reveal">
+                    <div class="shop-card-cover">
+                        <div class="shop-card-logo">PVK</div>
+                    </div>
+                    <div class="shop-card-body">
+                        <h3 class="shop-card-title">PVK Fashion</h3>
+                        <p class="shop-card-text">
+                            Boutique-style store page for clothes, shoes and accessories with product details and fast contact order.
+                        </p>
+                        <div class="shop-tags">
+                            <span>Fashion</span>
+                            <span>Instagram</span>
+                            <span>Quick Orders</span>
+                        </div>
+                        <a href="#" class="btn btn-brand w-100">View Shop</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="shop-card reveal">
+                    <div class="shop-card-cover" style="background: linear-gradient(135deg, #7c3aed, #312e81);">
+                        <div class="shop-card-logo">BEA</div>
+                    </div>
+                    <div class="shop-card-body">
+                        <h3 class="shop-card-title">Beauty Space</h3>
+                        <p class="shop-card-text">
+                            Product page for skincare and cosmetics with categories, price visibility and simple order requests.
+                        </p>
+                        <div class="shop-tags">
+                            <span>Beauty</span>
+                            <span>Catalog</span>
+                            <span>Lead Capture</span>
+                        </div>
+                        <a href="#" class="btn btn-brand w-100">View Shop</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="shop-card reveal">
+                    <div class="shop-card-cover" style="background: linear-gradient(135deg, #059669, #064e3b);">
+                        <div class="shop-card-logo">GDT</div>
+                    </div>
+                    <div class="shop-card-body">
+                        <h3 class="shop-card-title">Gadget Hub</h3>
+                        <p class="shop-card-text">
+                            Clean product-focused layout for electronics and accessories with social links and product actions.
+                        </p>
+                        <div class="shop-tags">
+                            <span>Gadgets</span>
+                            <span>WB Link</span>
+                            <span>Fast Setup</span>
+                        </div>
+                        <a href="#" class="btn btn-brand w-100">View Shop</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Launch offer -->
+<section class="section-space" id="launch">
+    <div class="container">
+        <div class="offer-box reveal">
+            <div class="offer-badge">Launch Offer</div>
+            <h2 class="offer-title">Start early and grow with YourSite</h2>
+            <p class="offer-text">
+                We are opening access in stages for early shops. The first users get longer free access,
+                early visibility and a better starting position on the platform.
+            </p>
+
+            <div class="offer-list">
+                <div class="offer-item">
+                    <div>
+                        <strong>First 20 shops</strong>
+                        <span>Get 2 months free access</span>
+                    </div>
+                    <div class="spots-badge">7 spots left</div>
+                </div>
+
+                <div class="offer-item">
+                    <div>
+                        <strong>Next 20 shops</strong>
+                        <span>Get 1 month free access</span>
+                    </div>
+                    <div class="spots-badge">Coming next</div>
+                </div>
+
+                <div class="offer-item">
+                    <div>
+                        <strong>After launch phase</strong>
+                        <span>Standard 15-day free trial</span>
+                    </div>
+                    <div class="spots-badge">Open trial</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section class="section-space" id="pricing">
+    <div class="container">
+        <div class="text-center mb-5 reveal">
+            <h2 class="section-title">Simple pricing, no confusion</h2>
+            <p class="section-subtitle">
+                Start with a free trial, build your page, add products and begin collecting orders.
+            </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-5">
+                <div class="price-card reveal">
+                    <div class="price-name">Trial</div>
+                    <div class="price-value">Free <span>/ limited time</span></div>
+                    <p class="price-desc">
+                        Perfect for testing the platform, creating your menu, adding products and sharing your link.
+                    </p>
+                    <ul class="price-list">
+                        <li><i class="bi bi-check-circle-fill"></i><span>Create your shop page</span></li>
+                        <li><i class="bi bi-check-circle-fill"></i><span>Add logo, cover, categories and products</span></li>
+                        <li><i class="bi bi-check-circle-fill"></i><span>Collect order requests</span></li>
+                        <li><i class="bi bi-check-circle-fill"></i><span>Early launch offers available</span></li>
+                    </ul>
+                    <a href="#" class="btn btn-soft w-100">Start Free</a>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="price-card featured reveal">
+                    <div class="price-top-badge">Main Plan</div>
+                    <div class="price-name">Standard</div>
+                    <div class="price-value">10,000 ֏ <span>/ month</span></div>
+                    <p class="price-desc">
+                        A simple monthly plan for brands that want a professional shop page without paying for a full website.
+                    </p>
+                    <ul class="price-list">
+                        <li><i class="bi bi-check-circle-fill"></i><span>Branded shop page</span></li>
+                        <li><i class="bi bi-check-circle-fill"></i><span>Products and categories</span></li>
+                        <li><i class="bi bi-check-circle-fill"></i><span>Social links on your page</span></li>
+                        <li><i class="bi bi-check-circle-fill"></i><span>Quick contact order flow</span></li>
+                    </ul>
+                    <a href="#" class="btn btn-brand w-100">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section-space pt-0">
+    <div class="container">
+        <div class="cta-box text-center reveal">
+            <h2 class="cta-title">Your products deserve more than just DMs</h2>
+            <p class="cta-text">
+                Launch your own branded page, organize your products, add your social platforms
+                and start receiving customer requests in a much cleaner way.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="#" class="btn btn-brand btn-lg">Create Your Shop</a>
+                <a href="#shops" class="btn btn-soft btn-lg">See Demo Shops</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <div class="footer-brand">Your<span>Site</span></div>
+                <p class="footer-text">
+                    A simple platform for Instagram shops and small brands to create a clean online page,
+                    show products and collect customer orders.
+                </p>
+            </div>
+            <div class="col-lg-6 text-lg-end">
+                <div class="footer-text">
+                    © 2026 YourSite. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Simple reveal on scroll
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const revealOnScroll = () => {
+        const triggerBottom = window.innerHeight * 0.92;
+
+        revealItems.forEach(item => {
+            const boxTop = item.getBoundingClientRect().top;
+            if (boxTop < triggerBottom) {
+                item.classList.add('show');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+
+            if (target) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
