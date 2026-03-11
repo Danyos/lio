@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PVK Fashion | YourSite</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <style>
+        :root {
+            --brand-dark: #0f172a;
+            --brand-primary: #2563eb;
+            --brand-primary-soft: rgba(37, 99, 235, 0.12);
+            --brand-success: #16a34a;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --bg-soft: #f8fafc;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-card: 0 14px 42px rgba(15, 23, 42, 0.10);
+            --radius-xl: 26px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--text-main);
+            background: #fff;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .page-wrap {
+            padding-bottom: 80px;
+        }
+
+        /* Navbar */
+        .topbar {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+
+        .brand-link {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--brand-dark);
+        }
+
+        .brand-link span {
+            color: var(--brand-primary);
+        }
+
+        /* Hero / shop header */
+        .shop-header {
+            padding: 28px 0 0;
+        }
+
+        .cover-box {
+            height: 260px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #1d4ed8, #0f172a);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .cover-box::before,
+        .cover-box::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .cover-box::before {
+            width: 220px;
+            height: 220px;
+            top: -40px;
+            right: -30px;
+        }
+
+        .cover-box::after {
+            width: 160px;
+            height: 160px;
+            bottom: -40px;
+            left: -20px;
+        }
+
+        .shop-profile-card {
+            margin-top: -70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-inner {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            box-shadow: var(--shadow-card);
+            padding: 28px;
+        }
+
+        .logo-box {
+            width: 110px;
+            height: 110px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--brand-primary);
+            border: 5px solid #fff;
+            box-shadow: var(--shadow-soft);
+            margin-top: -80px;
+        }
+
+        .shop-title {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 900;
+            letter-spacing: -0.8px;
+            margin-bottom: 10px;
+        }
+
+        .shop-subtitle {
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 760px;
+            margin-bottom: 18px;
+        }
+
+        .shop-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .meta-pill {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            color: #334155;
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .social-btn {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 16px;
+            background: var(--brand-primary-soft);
+            color: var(--brand-primary);
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+        .social-btn:hover {
+            background: rgba(37, 99, 235, 0.18);
+            color: var(--brand-primary);
+            transform: translateY(-2px);
+        }
+
+        .side-info-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: var(--shadow-soft);
+            height: 100%;
+        }
+
+        .side-info-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .side-info-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .side-info-list li {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eef2f7;
+            color: #334155;
+        }
+
+        .side-info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .side-info-list span:last-child {
+            font-weight: 700;
+            color: var(--brand-dark);
+        }
+
+        /* Categories */
+        .categories-section {
+            padding: 34px 0 18px;
+        }
+
+        .section-head {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 2vw, 2.1rem);
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .section-text {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .category-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-btn {
+            border: 1px solid var(--border-color);
+            background: #fff;
+            color: #334155;
+            padding: 11px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--brand-primary);
+            color: #fff;
+            border-color: var(--brand-primary);
+        }
+
+        /* Product cards */
+        .products-section {
+            padding-top: 10px;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            overflow: hidden;
+            height: 100%;
+            box-shadow: var(--shadow-soft);
+            transition: 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .product-image {
+            height: 230px;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            position: relative;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.92);
+            color: var(--brand-primary);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .product-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-category {
+            color: var(--brand-primary);
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--brand-dark);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-details {
+            border: 1px solid var(--border-color);
+            background: #fff;
+            color: #334155;
+            border-radius: 12px;
+            padding: 11px 16px;
+            font-weight: 700;
+        }
+
+        .btn-order {
+            border: none;
+            background: var(--brand-primary);
+            color: #fff;
+            border-radius: 12px;
+            padding: 11px 16px;
+            font-weight: 700;
+        }
+
+        .btn-order:hover,
+        .btn-details:hover {
+            opacity: 0.95;
+        }
+
+        /* CTA banner */
+        .cta-strip {
+            margin-top: 42px;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-radius: 28px;
+            padding: 28px;
+            color: #fff;
+            box-shadow: var(--shadow-card);
+        }
+
+        .cta-strip h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .cta-strip p {
+            color: rgba(255,255,255,0.76);
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        /* Modals */
+        .modal-content {
+            border: none;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #eef2f7;
+            padding: 20px 22px;
+        }
+
+        .modal-title {
+            font-weight: 800;
+        }
+
+        .modal-body {
+            padding: 22px;
+        }
+
+        .modal-product-image {
+            height: 280px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            margin-bottom: 20px;
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--brand-primary);
+            margin-bottom: 12px;
+        }
+
+        .modal-desc {
+            color: var(--text-muted);
+            line-height: 1.85;
+            margin-bottom: 18px;
+        }
+
+        .external-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .external-links a {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            color: #334155;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 14px;
+            padding: 13px 14px;
+            border: 1px solid #dbe2ea;
+            box-shadow: none !important;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #93c5fd;
+        }
+
+        .submit-order-btn {
+            border: none;
+            background: var(--brand-primary);
+            color: #fff;
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 800;
+        }
+
+        .powered-by {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .powered-by a {
+            color: var(--brand-primary);
+            font-weight: 800;
+        }
+
+        @media (max-width: 991px) {
+            .cover-box {
+                height: 220px;
+                border-radius: 24px;
+            }
+
+            .profile-inner {
+                padding: 22px;
+            }
+
+            .shop-profile-card {
+                margin-top: -56px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .logo-box {
+                width: 92px;
+                height: 92px;
+                font-size: 1.7rem;
+                border-radius: 24px;
+            }
+
+            .product-image {
+                height: 210px;
+            }
+
+            .product-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .product-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn-details,
+            .btn-order {
+                width: 100%;
+            }
+
+            .social-links {
+                gap: 10px;
+            }
+
+            .social-btn {
+                flex: 1 1 calc(50% - 10px);
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .cover-box {
+                height: 180px;
+            }
+
+            .profile-inner {
+                border-radius: 22px;
+            }
+
+            .side-info-card,
+            .product-card,
+            .cta-strip {
+                border-radius: 20px;
+            }
+
+            .social-btn {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <!-- Sticky topbar -->
+    <div class="topbar py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#" class="brand-link">Your<span>Site</span></a>
+
+            <div class="d-flex gap-2">
+                <a href="#" class="btn btn-light border rounded-pill px-3">Back</a>
+                <a href="#" class="btn btn-primary rounded-pill px-3">Create Your Shop</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Header -->
+    <section class="shop-header">
+        <div class="container">
+            <div class="cover-box"></div>
+
+            <div class="shop-profile-card">
+                <div class="row g-4 align-items-stretch">
+                    <div class="col-lg-8">
+                        <div class="profile-inner">
+                            <div class="logo-box">PVK</div>
+
+                            <h1 class="shop-title mt-3">PVK Fashion</h1>
+
+                            <p class="shop-subtitle">
+                                Stylish fashion page for clothes, shoes and accessories. Browse products,
+                                check details and leave your contact information to place an order quickly.
+                            </p>
+
+                            <div class="shop-meta">
+                                <div class="meta-pill"><i class="bi bi-geo-alt me-2"></i>Yerevan, Armenia</div>
+                                <div class="meta-pill"><i class="bi bi-bag-check me-2"></i>Fast order requests</div>
+                                <div class="meta-pill"><i class="bi bi-patch-check me-2"></i>Trusted brand page</div>
+                            </div>
+
+                            <div class="social-links">
+                                <a href="#" class="social-btn"><i class="bi bi-instagram me-2"></i>Instagram</a>
+                                <a href="#" class="social-btn"><i class="bi bi-telegram me-2"></i>Telegram</a>
+                                <a href="#" class="social-btn"><i class="bi bi-whatsapp me-2"></i>WhatsApp</a>
+                                <a href="#" class="social-btn"><i class="bi bi-globe2 me-2"></i>Wildberries</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="side-info-card">
+                            <h3 class="side-info-title">Shop Info</h3>
+                            <ul class="side-info-list">
+                                <li><span>Products</span><span>24</span></li>
+                                <li><span>Categories</span><span>4</span></li>
+                                <li><span>Contact Orders</span><span>Available</span></li>
+                                <li><span>Link</span><span>yoursite.am/pvk</span></li>
+                            </ul>
+
+                            <div class="mt-4">
+                                <button class="btn btn-primary w-100 rounded-4 py-3 fw-bold">
+                                    <i class="bi bi-share me-2"></i>Share This Shop
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories-section">
+                <div class="section-head">
+                    <div>
+                        <h2 class="section-title">Browse Products</h2>
+                        <p class="section-text">Select a category and explore the product collection.</p>
+                    </div>
+                </div>
+
+                <div class="category-wrap" id="categoryButtons">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="new">New Arrivals</button>
+                    <button class="category-btn" data-category="shoes">Shoes</button>
+                    <button class="category-btn" data-category="bags">Bags</button>
+                    <button class="category-btn" data-category="dresses">Dresses</button>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="products-section">
+                <div class="row g-4" id="productsGrid">
+
+                    <div class="col-md-6 col-xl-4 product-item" data-category="shoes">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <div class="product-badge">Popular</div>
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category">Shoes</div>
+                                <h3 class="product-name">White Sneakers</h3>
+                                <p class="product-desc">
+                                    Clean everyday sneakers with a modern minimal look and comfortable fit.
+                                </p>
+                                <div class="product-footer">
+                                    <div class="product-price">18,000 ֏</div>
+                                    <div class="product-actions">
+                                        <button
+                                                class="btn-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#productModal"
+                                                data-name="White Sneakers"
+                                                data-price="18,000 ֏"
+                                                data-desc="Clean everyday sneakers with a modern minimal look, lightweight sole and comfortable fit for daily city wear."
+                                                data-instagram="#"
+                                                data-wb="#"
+                                        >
+                                            Details
+                                        </button>
+                                        <button
+                                                class="btn-order"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-product="White Sneakers"
+                                        >
+                                            Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4 product-item" data-category="bags">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <div class="product-badge">New</div>
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category">Bags</div>
+                                <h3 class="product-name">Beige Bag</h3>
+                                <p class="product-desc">
+                                    Elegant neutral bag that matches everyday looks and classic outfits.
+                                </p>
+                                <div class="product-footer">
+                                    <div class="product-price">14,500 ֏</div>
+                                    <div class="product-actions">
+                                        <button
+                                                class="btn-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#productModal"
+                                                data-name="Beige Bag"
+                                                data-price="14,500 ֏"
+                                                data-desc="Elegant neutral bag with a modern shape, premium finish and practical size for daily use."
+                                                data-instagram="#"
+                                                data-wb="#"
+                                        >
+                                            Details
+                                        </button>
+                                        <button
+                                                class="btn-order"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-product="Beige Bag"
+                                        >
+                                            Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4 product-item" data-category="dresses new">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <div class="product-badge">Featured</div>
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category">Dresses</div>
+                                <h3 class="product-name">Summer Dress</h3>
+                                <p class="product-desc">
+                                    Light and elegant summer dress designed for comfort and a soft feminine style.
+                                </p>
+                                <div class="product-footer">
+                                    <div class="product-price">22,000 ֏</div>
+                                    <div class="product-actions">
+                                        <button
+                                                class="btn-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#productModal"
+                                                data-name="Summer Dress"
+                                                data-price="22,000 ֏"
+                                                data-desc="Light and elegant summer dress with a soft silhouette, easy movement and fresh seasonal look."
+                                                data-instagram="#"
+                                                data-wb="#"
+                                        >
+                                            Details
+                                        </button>
+                                        <button
+                                                class="btn-order"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-product="Summer Dress"
+                                        >
+                                            Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4 product-item" data-category="shoes">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <div class="product-badge">Classic</div>
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category">Shoes</div>
+                                <h3 class="product-name">Classic Heels</h3>
+                                <p class="product-desc">
+                                    Elegant heels for events, formal outfits and premium everyday styling.
+                                </p>
+                                <div class="product-footer">
+                                    <div class="product-price">19,000 ֏</div>
+                                    <div class="product-actions">
+                                        <button
+                                                class="btn-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#productModal"
+                                                data-name="Classic Heels"
+                                                data-price="19,000 ֏"
+                                                data-desc="Elegant heels with a refined shape and balanced height for formal looks and stylish evening outfits."
+                                                data-instagram="#"
+                                                data-wb="#"
+                                        >
+                                            Details
+                                        </button>
+                                        <button
+                                                class="btn-order"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-product="Classic Heels"
+                                        >
+                                            Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4 product-item" data-category="bags new">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <div class="product-badge">New</div>
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category">Bags</div>
+                                <h3 class="product-name">Mini Crossbody</h3>
+                                <p class="product-desc">
+                                    Compact bag for quick everyday use with a light and stylish look.
+                                </p>
+                                <div class="product-footer">
+                                    <div class="product-price">12,000 ֏</div>
+                                    <div class="product-actions">
+                                        <button
+                                                class="btn-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#productModal"
+                                                data-name="Mini Crossbody"
+                                                data-price="12,000 ֏"
+                                                data-desc="Compact crossbody bag with a practical daily format, clean design and lightweight comfort."
+                                                data-instagram="#"
+                                                data-wb="#"
+                                        >
+                                            Details
+                                        </button>
+                                        <button
+                                                class="btn-order"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-product="Mini Crossbody"
+                                        >
+                                            Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4 product-item" data-category="dresses">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <div class="product-badge">Top Pick</div>
+                            </div>
+                            <div class="product-body">
+                                <div class="product-category">Dresses</div>
+                                <h3 class="product-name">Evening Dress</h3>
+                                <p class="product-desc">
+                                    Refined evening model with premium look and elegant silhouette.
+                                </p>
+                                <div class="product-footer">
+                                    <div class="product-price">26,000 ֏</div>
+                                    <div class="product-actions">
+                                        <button
+                                                class="btn-details"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#productModal"
+                                                data-name="Evening Dress"
+                                                data-price="26,000 ֏"
+                                                data-desc="Refined evening dress with a premium silhouette, elegant movement and standout event style."
+                                                data-instagram="#"
+                                                data-wb="#"
+                                        >
+                                            Details
+                                        </button>
+                                        <button
+                                                class="btn-order"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#orderModal"
+                                                data-product="Evening Dress"
+                                        >
+                                            Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CTA strip -->
+                <div class="cta-strip">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-8">
+                            <h3>Want a page like this for your brand?</h3>
+                            <p>
+                                Create your own shop page, upload products, add social links and start receiving
+                                customer requests directly from your audience.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-lg-end">
+                            <a href="#" class="btn btn-light rounded-4 px-4 py-3 fw-bold">Create Your Shop</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="powered-by">
+                    Powered by <a href="#">YourSite</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Product Details Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Product Details</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-product-image"></div>
+                <h3 id="modalProductName" class="fw-bold mb-2">Product Name</h3>
+                <div id="modalProductPrice" class="modal-price">0 ֏</div>
+                <p id="modalProductDesc" class="modal-desc">
+                    Product description appears here.
+                </p>
+
+                <div class="external-links">
+                    <a id="modalInstagramLink" href="#" target="_blank">
+                        <i class="bi bi-instagram me-2"></i>Instagram
+                    </a>
+                    <a id="modalWbLink" href="#" target="_blank">
+                        <i class="bi bi-globe2 me-2"></i>Wildberries
+                    </a>
+                </div>
+
+                <button
+                        class="btn btn-primary w-100 rounded-4 py-3 fw-bold"
+                        data-bs-toggle="modal"
+                        data-bs-target="#orderModal"
+                        data-bs-dismiss="modal"
+                        id="openOrderFromProduct"
+                >
+                    Order This Product
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leave Your Contact Details</h5>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Selected Product</label>
+                    <input type="text" id="selectedProductInput" class="form-control" readonly />
+                </div>
+
+                <form id="orderForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">First Name</label>
+                        <input type="text" class="form-control" placeholder="Enter your first name" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Last Name</label>
+                        <input type="text" class="form-control" placeholder="Enter your last name" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Phone Number</label>
+                        <input type="tel" class="form-control" placeholder="Enter your phone number" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Comment</label>
+                        <textarea class="form-control" rows="4" placeholder="Optional note"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-order-btn">
+                        Send Order Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-body p-5">
+                <div class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                </div>
+                <h3 class="fw-bold mb-3">Order Sent Successfully</h3>
+                <p class="text-muted mb-4">
+                    Your request has been sent to the company. They will contact you soon.
+                </p>
+                <button class="btn btn-primary rounded-4 px-4 py-2 fw-bold" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Category filter
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const productItems = document.querySelectorAll('.product-item');
+
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            const selected = this.dataset.category;
+
+            productItems.forEach(item => {
+                const categories = item.dataset.category.split(' ');
+
+                if (selected === 'all' || categories.includes(selected)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Product details modal
+    const productModal = document.getElementById('productModal');
+    const modalProductName = document.getElementById('modalProductName');
+    const modalProductPrice = document.getElementById('modalProductPrice');
+    const modalProductDesc = document.getElementById('modalProductDesc');
+    const modalInstagramLink = document.getElementById('modalInstagramLink');
+    const modalWbLink = document.getElementById('modalWbLink');
+    const openOrderFromProduct = document.getElementById('openOrderFromProduct');
+
+    productModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+
+        const name = button.getAttribute('data-name');
+        const price = button.getAttribute('data-price');
+        const desc = button.getAttribute('data-desc');
+        const instagram = button.getAttribute('data-instagram');
+        const wb = button.getAttribute('data-wb');
+
+        modalProductName.textContent = name;
+        modalProductPrice.textContent = price;
+        modalProductDesc.textContent = desc;
+        modalInstagramLink.href = instagram;
+        modalWbLink.href = wb;
+        openOrderFromProduct.setAttribute('data-product', name);
+    });
+
+    // Order modal
+    const orderModal = document.getElementById('orderModal');
+    const selectedProductInput = document.getElementById('selectedProductInput');
+
+    orderModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const product = button.getAttribute('data-product') || 'Selected product';
+        selectedProductInput.value = product;
+    });
+
+    // Fake submit
+    const orderForm = document.getElementById('orderForm');
+    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    const orderModalInstance = bootstrap.Modal.getOrCreateInstance(orderModal);
+
+    orderForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        orderModalInstance.hide();
+        setTimeout(() => {
+            successModal.show();
+            orderForm.reset();
+            selectedProductInput.value = '';
+        }, 350);
+    });
+</script>
+</body>
+</html>
