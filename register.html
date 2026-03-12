@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LIO — Ստեղծել իմ խանութը</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root{
+            --bg:#f5f7fb;
+            --card:#ffffff;
+            --text:#0f172a;
+            --muted:#64748b;
+            --line:#e2e8f0;
+            --primary:#2563eb;
+            --primary-dark:#1d4ed8;
+            --primary-soft:rgba(37,99,235,.10);
+            --danger:#dc2626;
+            --shadow:0 10px 28px rgba(15,23,42,.08);
+            --radius-xl:24px;
+            --radius-lg:18px;
+            --radius-md:14px;
+        }
+
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            margin:0;
+            font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+            background:linear-gradient(180deg,#f9fbff 0%,var(--bg) 100%);
+            color:var(--text);
+        }
+
+        .page-wrap{padding:12px 0 32px}
+        .brand{
+            font-size:1.2rem;
+            font-weight:900;
+            letter-spacing:-.4px;
+            color:var(--text);
+            text-decoration:none;
+        }
+        .brand span{color:var(--primary)}
+
+        .topbar{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            margin-bottom:12px;
+        }
+
+        .hero-card,.form-card{
+            background:var(--card);
+            border:1px solid var(--line);
+            box-shadow:var(--shadow);
+            border-radius:var(--radius-xl);
+        }
+
+        .hero-card{padding:16px;margin-bottom:14px}
+        .hero-title{
+            font-size:clamp(1.45rem,5vw,2.2rem);
+            font-weight:900;
+            line-height:1.12;
+            margin:8px 0 10px;
+            letter-spacing:-.5px;
+        }
+        .hero-text{color:var(--muted);line-height:1.7;margin:0;font-size:.92rem}
+
+        .form-card{padding:14px}
+
+        .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+        .step-pill{border:1px solid var(--line);border-radius:14px;padding:10px 8px;background:#fff;text-align:center;font-weight:800;color:var(--muted);font-size:.78rem;line-height:1.25}
+        .step-pill.active{background:var(--primary);border-color:var(--primary);color:#fff}
+        .step-pill.done{background:var(--primary-soft);border-color:#bfdbfe;color:var(--primary)}
+
+        .section-label{font-size:.76rem;font-weight:900;color:var(--primary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+        .step-title{font-size:1.16rem;font-weight:900;margin-bottom:6px;line-height:1.2}
+        .step-text{color:var(--muted);line-height:1.6;margin-bottom:16px;font-size:.89rem}
+
+        .form-label{font-weight:800;margin-bottom:7px;font-size:.92rem}
+        .form-control,.form-select,.form-control:focus,.form-select:focus{border-radius:12px;box-shadow:none}
+        .form-control,.form-select{border:1px solid #dbe3ee;padding:12px 13px;font-size:.95rem}
+        textarea.form-control{min-height:104px;resize:vertical}
+        .field-note{font-size:.78rem;color:var(--muted);margin-top:6px;line-height:1.45}
+        .error-text{display:none;color:var(--danger);font-size:.78rem;margin-top:6px;font-weight:700}
+        .is-invalid-lite{border-color:var(--danger)!important;background:#fff8f8}
+        .is-valid-lite{border-color:#86efac!important;background:#f6fff8}
+
+        .upload-box{border:1.5px dashed #cbd5e1;border-radius:16px;padding:14px;background:#fafcff;text-align:center}
+        .logo-preview-inline{
+            width:88px;
+            height:88px;
+            border-radius:20px;
+            overflow:hidden;
+            border:1px solid var(--line);
+            margin:0 auto 10px;
+            background:#fff;
+            display:grid;
+            place-items:center;
+            color:var(--muted);
+            font-weight:800;
+            padding:6px;
+        }
+        .logo-preview-inline img{width:100%;height:100%;object-fit:contain;display:block}
+
+        .nav-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:18px}
+        .btn-soft2{background:#fff;border:1px solid var(--line);color:#334155;border-radius:12px;padding:12px 16px;font-weight:800}
+        .btn-main{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;color:#fff;border-radius:12px;padding:12px 16px;font-weight:800}
+
+        .success-box{display:none;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:16px;padding:14px 16px;margin-top:16px}
+        .success-box.show{display:block}
+        .success-title{font-weight:900;color:#166534;margin-bottom:4px;font-size:.95rem}
+        .success-text{color:#166534;margin:0;font-size:.88rem;line-height:1.55}
+
+        @media (max-width:575px){
+            .container{padding-left:12px;padding-right:12px}
+            .hero-card,.form-card{border-radius:18px}
+            .steps{grid-template-columns:1fr}
+            .step-pill{padding:11px 10px;font-size:.82rem}
+            .topbar .text-muted{font-size:.8rem!important}
+        }
+
+        @media (min-width:768px){
+            .page-wrap{padding:18px 0 40px}
+            .hero-card{padding:20px}
+            .form-card{padding:18px}
+            .nav-actions{grid-template-columns:1fr 1fr}
+            .nav-actions #submitBtn{grid-column:2/3}
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+    <div class="container">
+        <div class="topbar">
+            <a href="#" class="brand">L<span>IO</span></a>
+            <div class="text-muted fw-semibold small">Ստեղծել իմ խանութը</div>
+        </div>
+
+        <div class="hero-card">
+            <div class="section-label">LIO onboarding</div>
+            <h1 class="hero-title">Բացիր քո խանութը արագ և առանց ավելորդ քայլերի</h1>
+            <p class="hero-text">
+                Լրացրու 3 պարզ քայլ, ավարտիր գրանցումը և անմիջապես անցիր dashboard՝ քո խանութը լցնելու համար։
+            </p>
+        </div>
+
+        <div class="form-card">
+            <div class="steps" id="stepsBar">
+                <div class="step-pill active" data-step="1">1. Անձնական կոնտակտներ</div>
+                <div class="step-pill" data-step="2">2. Բիզնեսի տվյալներ</div>
+                <div class="step-pill" data-step="3">3. Կայքի կոնտակտներ և լոգո</div>
+            </div>
+
+            <form id="shopForm" novalidate>
+                <div class="step-panel" data-step-panel="1">
+                    <div class="section-label">Քայլ 1</div>
+                    <div class="step-title">Անձնական կոնտակտները</div>
+                    <div class="step-text">Սրանք պետք են մուտք գործելու և մասնագետի կողմից քեզ հետ կապ հաստատելու համար։</div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Անուն Ազգանուն</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="Օրինակ՝ Դանիել Համբարձումյան" />
+                            <div class="error-text">Գրիր անուն և ազգանուն։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Օրինակ՝ info@example.com" />
+                            <div class="error-text">Գրիր ճիշտ email հասցե։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Քո հեռախոսահամարը</label>
+                            <input type="tel" class="form-control" id="userPhone" placeholder="Օրինակ՝ +374 99 00 00 00" />
+                            <div class="field-note">Այս համարը կայքում չի երևալու։</div>
+                            <div class="error-text">Գրիր հեռախոսահամար։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Հարցերով կապ հաստատող մասնագետի հեռախոսահամար</label>
+                            <input type="tel" class="form-control" id="managerPhone" placeholder="Օրինակ՝ +374 94 00 00 00" />
+                            <div class="field-note">Այս համարը նույնպես կայքում չի երևալու։</div>
+                            <div class="error-text">Գրիր մասնագետի հեռախոսահամար։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Գաղտնաբառ</label>
+                            <input type="password" class="form-control" id="password" placeholder="Ստեղծիր գաղտնաբառ" />
+                            <div class="field-note">Առնվազն 6 նիշ։</div>
+                            <div class="error-text">Գաղտնաբառը պետք է լինի առնվազն 6 նիշ։</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-panel d-none" data-step-panel="2">
+                    <div class="section-label">Քայլ 2</div>
+                    <div class="step-title">Բիզնեսի տվյալները</div>
+                    <div class="step-text">Լրացրու այն հիմնական տվյալները, որոնցով կստեղծվի քո խանութի էջը։</div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Ընկերության / բրենդի անուն</label>
+                            <input type="text" class="form-control" id="brandName" placeholder="Օրինակ՝ PVK Fashion" />
+                            <div class="error-text">Գրիր brand name։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Ինչով եք զբաղվում</label>
+                            <input type="text" class="form-control" id="businessType" placeholder="Օրինակ՝ Հագուստ, կոշիկ, աքսեսուարներ" />
+                            <div class="error-text">Նշիր գործունեության ուղղությունը։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Կարճ նկարագրություն</label>
+                            <textarea class="form-control" id="brandDescription" placeholder="Մի քանի նախադասությամբ ներկայացրու քո խանութը"></textarea>
+                            <div class="error-text">Գրիր առնվազն 20 նիշանոց նկարագրություն։</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-panel d-none" data-step-panel="3">
+                    <div class="section-label">Քայլ 3</div>
+                    <div class="step-title">Կայքում երևացող կոնտակտները և լոգոն</div>
+                    <div class="step-text">Վերջում ավելացրու հրապարակային տվյալները, սոց. հղումները և լոգոն։</div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Կայքում երևացող հեռախոսահամար</label>
+                            <input type="tel" class="form-control" id="publicPhone" placeholder="Օրինակ՝ +374 99 12 34 56" />
+                            <div class="error-text">Գրիր հրապարակային հեռախոսահամար։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Հասցե (եթե կա)</label>
+                            <input type="text" class="form-control" id="address" placeholder="Օրինակ՝ Երևան, Կոմիտաս 12" />
+                            <div class="field-note">Եթե չունես հասցե, կարող ես թողնել դատարկ։</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Instagram</label>
+                            <input type="url" class="form-control" id="instagramLink" placeholder="https://instagram.com/yourbrand" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-control" id="websiteLink" placeholder="https://example.com" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Facebook</label>
+                            <input type="url" class="form-control" id="facebookLink" placeholder="https://facebook.com/yourbrand" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Wildberries</label>
+                            <input type="url" class="form-control" id="wbLink" placeholder="https://www.wildberries.ru/..." />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Telegram</label>
+                            <input type="url" class="form-control" id="telegramLink" placeholder="https://t.me/yourbrand" />
+                        </div>
+                        <div class="col-12">
+                            <div class="upload-box">
+                                <div class="logo-preview-inline" id="inlineLogoPreview">LOGO</div>
+                                <label class="form-label d-block">Լոգո</label>
+                                <input type="file" class="form-control" id="logoInput" accept="image/*" />
+                                <div class="field-note">Եթե լոգոն մեծ է, ավտոմատ կմնա բլոկի ներսում և չի փախնի դուրս։</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="success-box" id="successBox">
+                                <div class="success-title">Պատրաստ է 🚀</div>
+                                <p class="success-text">Սեղմիր «Ավարտել գրանցումը», և կանցնես dashboard։</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button type="button" class="btn-soft2" id="prevBtn">← Նախորդ</button>
+                    <button type="button" class="btn-main" id="nextBtn">Հաջորդ քայլ →</button>
+                    <button type="submit" class="btn-main d-none" id="submitBtn">Ավարտել գրանցումը</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('shopForm');
+    const stepPanels = document.querySelectorAll('[data-step-panel]');
+    const stepPills = document.querySelectorAll('[data-step]');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const successBox = document.getElementById('successBox');
+    const logoInput = document.getElementById('logoInput');
+    const inlineLogoPreview = document.getElementById('inlineLogoPreview');
+
+    let currentStep = 1;
+
+    const fields = {
+        1: ['fullName', 'email', 'userPhone', 'managerPhone', 'password'],
+        2: ['brandName', 'businessType', 'brandDescription'],
+        3: ['publicPhone']
+    };
+
+    function setStep(step){
+        currentStep = step;
+
+        stepPanels.forEach(panel => {
+            panel.classList.toggle('d-none', Number(panel.dataset.stepPanel) !== step);
+        });
+
+        stepPills.forEach(pill => {
+            const s = Number(pill.dataset.step);
+            pill.classList.remove('active','done');
+            if(s === step) pill.classList.add('active');
+            if(s < step) pill.classList.add('done');
+        });
+
+        prevBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+        nextBtn.classList.toggle('d-none', step === 3);
+        submitBtn.classList.toggle('d-none', step !== 3);
+        successBox.classList.toggle('show', step === 3);
+    }
+
+    function validateEmail(value){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+    }
+
+    function validateStep(step){
+        let valid = true;
+
+        fields[step].forEach(id => {
+            const input = document.getElementById(id);
+            const error = input.parentElement.querySelector('.error-text');
+            const value = input.value.trim();
+            let isFieldValid = true;
+
+            if(id === 'fullName') isFieldValid = value.length >= 4 && value.includes(' ');
+            if(id === 'email') isFieldValid = validateEmail(value);
+            if(id === 'userPhone') isFieldValid = value.length >= 8;
+            if(id === 'managerPhone') isFieldValid = value.length >= 8;
+            if(id === 'password') isFieldValid = value.length >= 6;
+            if(id === 'brandName') isFieldValid = value.length >= 2;
+            if(id === 'businessType') isFieldValid = value.length >= 3;
+            if(id === 'brandDescription') isFieldValid = value.length >= 20;
+            if(id === 'publicPhone') isFieldValid = value.length >= 8;
+
+            input.classList.remove('is-invalid-lite','is-valid-lite');
+            if(!isFieldValid){
+                valid = false;
+                input.classList.add('is-invalid-lite');
+                if(error) error.style.display = 'block';
+            } else {
+                input.classList.add('is-valid-lite');
+                if(error) error.style.display = 'none';
+            }
+        });
+
+        return valid;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        if(currentStep > 1) setStep(currentStep - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if(validateStep(currentStep)) setStep(currentStep + 1);
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if(validateStep(3)) {
+            window.location.href = 'dashboard.html';
+        }
+    });
+
+    logoInput.addEventListener('change', function(){
+        const file = this.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e){
+            inlineLogoPreview.innerHTML = `<img src="${e.target.result}" alt="logo">`;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    setStep(1);
+</script>
+</body>
+</html>
