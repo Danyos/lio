@@ -754,29 +754,50 @@
     pageSub.textContent = panelMeta[name].sub;
     sidebar.classList.remove('open');
     sidebarBackdrop.classList.remove('show');
-    document.body.style.overflow = 'auto';
+    unlockBodyScroll();
   }
 
   menuButtons.forEach(btn => {
     btn.addEventListener('click', () => openPanel(btn.dataset.panel));
   });
 
+  let scrollYPos = 0;
+
+  function lockBodyScroll() {
+    scrollYPos = window.scrollY || window.pageYOffset;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollYPos}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function unlockBodyScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, scrollYPos);
+  }
+
   mobileMenuBtn.addEventListener('click', () => {
     const isOpen = sidebar.classList.toggle('open');
     sidebarBackdrop.classList.toggle('show');
 
-    // lock body scroll when sidebar open
-    if(isOpen){
-      document.body.style.overflow = 'hidden';
-    }else{
-      document.body.style.overflow = 'auto';
+    if (isOpen) {
+      lockBodyScroll();
+    } else {
+      unlockBodyScroll();
     }
   });
 
   sidebarBackdrop.addEventListener('click', () => {
     sidebar.classList.remove('open');
     sidebarBackdrop.classList.remove('show');
-    document.body.style.overflow = 'auto';
+    unlockBodyScroll();
   });
 </script>
 </body>
