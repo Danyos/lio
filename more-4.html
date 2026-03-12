@@ -1575,5 +1575,33 @@
     });
 
 </script>
+
+<script>
+    const burgerBtn = document.getElementById('burgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const shopHeader = document.getElementById('shopHeader');
+
+    if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', () => {
+            burgerBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.mobile-menu-link').forEach(link => {
+            link.addEventListener('click', () => {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('open');
+            });
+        });
+    }
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            shopHeader.classList.add('scrolled');
+        } else {
+            shopHeader.classList.remove('scrolled');
+        }
+    });
+</script>
 </body>
 </html>
