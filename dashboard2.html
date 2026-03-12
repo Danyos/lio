@@ -35,10 +35,9 @@
       background:var(--bg);
       color:var(--text);
       min-height:100svh;
-      min-height:100dvh;
     }
 
-    .app{display:grid;grid-template-columns:280px 1fr;min-height:100svh;min-height:100dvh;overflow-x:hidden}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100svh;overflow-x:hidden}
 
     .sidebar{
       background:#0f172a;
@@ -47,10 +46,9 @@
       position:sticky;
       top:0;
       height:100svh;
-      height:100dvh;
       min-height:100svh;
-      min-height:100dvh;
       overflow:auto;
+      overscroll-behavior:contain;
     }
 
     .brand{
@@ -105,7 +103,7 @@
     .menu-btn.active{background:#2563eb;color:#fff}
     .menu-btn i{font-size:1.05rem;width:20px;text-align:center}
 
-    .main{display:flex;flex-direction:column;min-width:0;min-height:100svh;min-height:100dvh}
+    .main{display:flex;flex-direction:column;min-width:0;min-height:100svh}
 
     .topbar{
       padding:14px 18px;
@@ -231,20 +229,18 @@
     }
 
     @media (max-width:991px){
-      .app{grid-template-columns:1fr;min-height:100svh;min-height:100dvh}
+      .app{grid-template-columns:1fr;min-height:100svh}
       .sidebar{
         position:fixed;left:0;top:0;bottom:0;width:min(84vw,280px);z-index:60;
         height:100svh;
-        height:100dvh;
         min-height:100svh;
-        min-height:100dvh;
         padding-bottom:calc(18px + env(safe-area-inset-bottom, 0px));
         transform:translateX(-100%);transition:.25s ease;
       }
-      .main{min-height:100svh;min-height:100dvh}
       .sidebar.open{transform:translateX(0)}
       .mobile-menu-btn{display:inline-grid;place-items:center;flex-shrink:0}
       .content{padding:14px}
+      .main{min-height:100svh}
     }
 
     @media (max-width:575px){
@@ -758,6 +754,7 @@
     pageSub.textContent = panelMeta[name].sub;
     sidebar.classList.remove('open');
     sidebarBackdrop.classList.remove('show');
+    document.body.style.overflow = 'auto';
   }
 
   menuButtons.forEach(btn => {
@@ -765,13 +762,21 @@
   });
 
   mobileMenuBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
+    const isOpen = sidebar.classList.toggle('open');
     sidebarBackdrop.classList.toggle('show');
+
+    // lock body scroll when sidebar open
+    if(isOpen){
+      document.body.style.overflow = 'hidden';
+    }else{
+      document.body.style.overflow = 'auto';
+    }
   });
 
   sidebarBackdrop.addEventListener('click', () => {
     sidebar.classList.remove('open');
     sidebarBackdrop.classList.remove('show');
+    document.body.style.overflow = 'auto';
   });
 </script>
 </body>
