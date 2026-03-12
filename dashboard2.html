@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIO Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --primary:#2563eb;
+      --primary-dark:#1d4ed8;
+      --primary-soft:rgba(37,99,235,.10);
+      --success:#16a34a;
+      --warning:#f59e0b;
+      --danger:#dc2626;
+      --shadow:0 10px 28px rgba(15,23,42,.08);
+      --radius-xl:24px;
+      --radius-lg:18px;
+      --radius-md:14px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh;overflow-x:hidden}
+
+    .sidebar{
+      background:#0f172a;
+      color:#fff;
+      padding:18px 14px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:8px 10px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      margin-bottom:14px;
+    }
+    .brand-logo{
+      width:44px;height:44px;border-radius:14px;
+      background:linear-gradient(135deg,#2563eb,#60a5fa);
+      display:grid;place-items:center;font-weight:900;font-size:1.1rem;
+    }
+    .brand-title{font-weight:900;font-size:1.05rem;line-height:1.1}
+    .brand-sub{font-size:.78rem;color:rgba(255,255,255,.65)}
+
+    .user-card{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:16px;
+    }
+    .user-avatar{
+      width:48px;height:48px;border-radius:16px;
+      background:#fff;color:#2563eb;font-weight:900;
+      display:grid;place-items:center;flex-shrink:0;
+    }
+    .user-name{font-weight:800;font-size:.95rem}
+    .user-email{font-size:.78rem;color:rgba(255,255,255,.65);word-break:break-word}
+
+    .menu-title{
+      font-size:.74rem;
+      color:rgba(255,255,255,.42);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin:16px 10px 8px;
+      font-weight:800;
+    }
+    .menu{display:grid;gap:6px}
+    .menu-btn{
+      width:100%;border:none;background:transparent;color:#dbe4f0;
+      display:flex;align-items:center;gap:12px;padding:12px 12px;
+      border-radius:14px;font-weight:700;text-align:left;transition:.2s ease;
+    }
+    .menu-btn:hover{background:rgba(255,255,255,.06)}
+    .menu-btn.active{background:#2563eb;color:#fff}
+    .menu-btn i{font-size:1.05rem;width:20px;text-align:center}
+
+    .main{display:flex;flex-direction:column;min-width:0}
+
+    .topbar{
+      padding:14px 18px;
+      background:rgba(255,255,255,.86);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+      position:sticky;
+      top:0;
+      z-index:30;
+    }
+    .topbar-inner{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .page-title{font-size:1.25rem;font-weight:900;margin:0}
+    .page-sub{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+
+    .mobile-menu-btn{
+      display:none;
+      width:42px;height:42px;border:1px solid var(--line);background:#fff;
+      border-radius:12px;
+    }
+
+    .content{padding:18px;overflow-x:hidden}
+    .content-panel{display:none}
+    .content-panel.active{display:block}
+
+    .grid{display:grid;gap:16px}
+    .stats-grid{grid-template-columns:repeat(4,1fr)}
+    .two-col{grid-template-columns:1.2fr .8fr}
+    .three-col{grid-template-columns:repeat(3,1fr)}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      padding:16px;
+      min-width:0;
+    }
+
+    .stat-card .label{font-size:.82rem;color:var(--muted);margin-bottom:8px;font-weight:700}
+    .stat-card .value{font-size:1.7rem;font-weight:900;line-height:1}
+    .stat-card .meta{font-size:.8rem;color:var(--muted);margin-top:8px}
+
+    .section-head{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-bottom:14px;flex-wrap:wrap;
+    }
+    .section-title{font-size:1.05rem;font-weight:900;margin:0}
+    .section-text{font-size:.84rem;color:var(--muted);margin:3px 0 0}
+
+    .btn-main,.btn-soft{
+      border:none;border-radius:12px;padding:10px 14px;font-weight:800;
+    }
+    .btn-main{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff}
+    .btn-soft{background:var(--primary-soft);color:var(--primary)}
+
+    .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:16px}
+    table{width:100%;border-collapse:collapse;min-width:620px}
+    th,td{padding:12px 10px;border-bottom:1px solid var(--line);font-size:.9rem;white-space:nowrap}
+    th{text-align:left;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+    tr:last-child td{border-bottom:none}
+
+    .status{
+      display:inline-flex;align-items:center;gap:6px;border-radius:999px;
+      padding:6px 10px;font-size:.76rem;font-weight:800;
+    }
+    .status.success{background:#ecfdf5;color:#166534}
+    .status.warning{background:#fffbeb;color:#92400e}
+    .status.danger{background:#fef2f2;color:#991b1b}
+    .status.primary{background:#eff6ff;color:#1d4ed8}
+
+    .mini-list{display:grid;gap:10px}
+    .mini-item{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;flex-wrap:wrap;
+    }
+    .mini-item-title{font-weight:800;font-size:.92rem}
+    .mini-item-sub{color:var(--muted);font-size:.8rem}
+
+    .profile-box{display:grid;gap:14px}
+    .profile-row{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      padding:12px 0;border-bottom:1px solid var(--line);
+    }
+    .profile-row:last-child{border-bottom:none}
+    .profile-key{font-size:.86rem;color:var(--muted);font-weight:700}
+    .profile-value{font-size:.92rem;font-weight:800;text-align:right}
+
+    .shop-preview{
+      border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;
+    }
+    .shop-cover{height:110px;background:linear-gradient(135deg,#2563eb,#0f172a);position:relative}
+    .shop-logo{
+      position:absolute;left:14px;bottom:-24px;width:64px;height:64px;border-radius:18px;
+      border:4px solid #fff;background:#fff;display:grid;place-items:center;font-weight:900;color:#2563eb;
+    }
+    .shop-body{padding:34px 14px 14px}
+    .shop-name{font-weight:900;font-size:1.05rem;margin-bottom:4px}
+    .shop-desc{color:var(--muted);font-size:.84rem;line-height:1.6}
+
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .chip{background:var(--primary-soft);color:var(--primary);padding:6px 10px;border-radius:999px;font-size:.75rem;font-weight:800}
+
+    .mobile-sidebar-backdrop{
+      display:none;position:fixed;inset:0;background:rgba(15,23,42,.48);z-index:55;
+    }
+    .mobile-sidebar-backdrop.show{display:block}
+
+    @media (max-width:1199px){
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .two-col,.three-col{grid-template-columns:1fr}
+    }
+
+    @media (max-width:767px){
+      .stats-grid{grid-template-columns:1fr}
+      .topbar-inner{display:grid;grid-template-columns:42px 1fr;gap:10px}
+      .topbar-actions{grid-column:1 / -1;display:grid;grid-template-columns:1fr;gap:8px}
+      .title-stack{min-width:0}
+      .page-title,.page-sub{word-break:break-word}
+      .stat-card .value{font-size:1.45rem}
+      th,td{padding:10px 8px;font-size:.84rem}
+    }
+
+    @media (max-width:991px){
+      .app{grid-template-columns:1fr}
+      .sidebar{
+        position:fixed;left:0;top:0;bottom:0;width:min(84vw,280px);z-index:60;
+        transform:translateX(-100%);transition:.25s ease;
+      }
+      .sidebar.open{transform:translateX(0)}
+      .mobile-menu-btn{display:inline-grid;place-items:center;flex-shrink:0}
+      .content{padding:14px}
+    }
+
+    @media (max-width:575px){
+      .stats-grid{grid-template-columns:1fr}
+      .topbar{padding:12px 12px}
+      .page-title{font-size:1.02rem;line-height:1.2}
+      .page-sub{font-size:.8rem;line-height:1.45}
+      .card{padding:12px;border-radius:16px}
+      .content{padding:10px}
+      .section-head{align-items:flex-start}
+      .section-title{font-size:.98rem}
+      .btn-main,.btn-soft{text-align:center;justify-content:center}
+      .profile-row{flex-direction:column;align-items:flex-start;gap:6px}
+      .profile-value{text-align:left;word-break:break-word}
+      .mini-item{align-items:flex-start}
+      .mini-item > strong,
+      .mini-item > .status,
+      .mini-item > button,
+      .mini-item > i{margin-left:auto}
+      .user-card{padding:10px}
+      .user-name{font-size:.9rem}
+      .user-email{font-size:.74rem}
+      .menu-btn{padding:11px 10px;font-size:.92rem}
+      .shop-preview{border-radius:16px}
+      .shop-cover{height:88px}
+      .shop-logo{width:56px;height:56px;border-radius:16px;bottom:-20px}
+      .shop-body{padding:30px 12px 12px}
+      .chips{gap:6px}
+      .chip{font-size:.72rem}
+      .table-wrap{border-radius:14px}
+    }
+
+
+    /* ===== EXTRA MOBILE FIX 0–770px ===== */
+    @media (max-width:770px){
+      .topbar-inner{
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        gap:10px;
+      }
+
+      .topbar-actions{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+      }
+
+      .topbar-actions .btn-main,
+      .topbar-actions .btn-soft{
+        width:100%;
+      }
+
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+
+      .two-col,
+      .three-col{
+        grid-template-columns:1fr;
+      }
+
+      .section-head{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+
+      .mini-item{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .mini-item i,
+      .mini-item button,
+      .mini-item strong,
+      .mini-item .status{
+        align-self:flex-end;
+      }
+
+      .profile-row{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .table-wrap{
+        overflow-x:auto;
+      }
+
+      table{
+        min-width:560px;
+      }
+
+      .shop-body{
+        padding:34px 12px 14px;
+      }
+
+      .content{
+        padding:10px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<div class="mobile-sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">L</div>
+      <div>
+        <div class="brand-title">LIO Dashboard</div>
+        <div class="brand-sub">Քո խանութի կառավարում</div>
+      </div>
+    </div>
+
+    <div class="user-card">
+      <div class="user-avatar">PVK</div>
+      <div>
+        <div class="user-name">PVK Fashion</div>
+        <div class="user-email">info@pvkfashion.am</div>
+      </div>
+    </div>
+
+    <div class="menu-title">Հիմնական</div>
+    <div class="menu">
+      <button class="menu-btn active" data-panel="dashboard"><i class="bi bi-grid-1x2-fill"></i>Dashboard</button>
+      <button class="menu-btn" data-panel="profile"><i class="bi bi-person-circle"></i>Իմ հաշիվը</button>
+      <button class="menu-btn" data-panel="shop"><i class="bi bi-shop"></i>Իմ խանութը</button>
+      <button class="menu-btn" data-panel="products"><i class="bi bi-bag"></i>Ապրանքներ</button>
+      <button class="menu-btn" data-panel="orders"><i class="bi bi-receipt"></i>Պատվերներ</button>
+      <button class="menu-btn" data-panel="categories"><i class="bi bi-grid-3x3-gap"></i>Բաժիններ</button>
+      <button class="menu-btn" data-panel="messages"><i class="bi bi-chat-dots"></i>Հաղորդագրություններ</button>
+      <button class="menu-btn" data-panel="analytics"><i class="bi bi-bar-chart-line"></i>Վիճակագրություն</button>
+      <button class="menu-btn" data-panel="subscription"><i class="bi bi-credit-card"></i>Բաժանորդագրություն</button>
+      <button class="menu-btn" data-panel="settings"><i class="bi bi-gear"></i>Կարգավորումներ</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="d-flex align-items-center gap-2">
+          <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="bi bi-list fs-5"></i></button>
+          <div class="title-stack">
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <p class="page-sub" id="pageSub">Տես քո խանութի հիմնական վիճակը մեկ տեղում</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2 flex-wrap topbar-actions">
+          <button class="btn-soft">Նայել էջը</button>
+          <button class="btn-main">Ավելացնել ապրանք</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <section class="content-panel active" id="panel-dashboard">
+        <div class="grid stats-grid mb-3">
+          <div class="card stat-card">
+            <div class="label">Ապրանքներ</div>
+            <div class="value">28</div>
+            <div class="meta">+4 այս շաբաթ</div>
+          </div>
+          <div class="card stat-card">
+            <div class="label">Պատվերներ</div>
+            <div class="value">143</div>
+            <div class="meta">12 նոր հարցում այսօր</div>
+          </div>
+          <div class="card stat-card">
+            <div class="label">Դիտումներ</div>
+            <div class="value">2,480</div>
+            <div class="meta">Վերջին 30 օր</div>
+          </div>
+          <div class="card stat-card">
+            <div class="label">Պլան</div>
+            <div class="value" style="font-size:1.2rem">Standard</div>
+            <div class="meta">Մինչև 24 Ապրիլ 2026</div>
+          </div>
+        </div>
+
+        <div class="grid two-col">
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Վերջին պատվերները</h3>
+                <p class="section-text">Քո խանութի վերջին ակտիվությունը</p>
+              </div>
+              <button class="btn-soft">Բոլորը</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                <tr>
+                  <th>Հաճախորդ</th>
+                  <th>Ապրանք</th>
+                  <th>Ամսաթիվ</th>
+                  <th>Կարգավիճակ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Անի Մ.</td>
+                  <td>White Sneakers</td>
+                  <td>12 Մարտ</td>
+                  <td><span class="status warning">Սպասման մեջ</span></td>
+                </tr>
+                <tr>
+                  <td>Մարիամ Հ.</td>
+                  <td>Beige Bag</td>
+                  <td>12 Մարտ</td>
+                  <td><span class="status success">Հաստատված</span></td>
+                </tr>
+                <tr>
+                  <td>Սոնա Գ.</td>
+                  <td>Summer Dress</td>
+                  <td>11 Մարտ</td>
+                  <td><span class="status primary">Նոր</span></td>
+                </tr>
+                <tr>
+                  <td>Գայանե Ա.</td>
+                  <td>Classic Heels</td>
+                  <td>10 Մարտ</td>
+                  <td><span class="status danger">Չեղարկված</span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h3 class="section-title">Արագ գործողություններ</h3>
+                  <p class="section-text">Ամենահաճախ օգտագործվող բաժինները</p>
+                </div>
+              </div>
+              <div class="mini-list">
+                <div class="mini-item"><div><div class="mini-item-title">Ավելացնել ապրանք</div><div class="mini-item-sub">Ստեղծիր նոր ապրանք</div></div><i class="bi bi-chevron-right"></i></div>
+                <div class="mini-item"><div><div class="mini-item-title">Խմբագրել խանութը</div><div class="mini-item-sub">Լոգո, նկարագրություն, կոնտակտներ</div></div><i class="bi bi-chevron-right"></i></div>
+                <div class="mini-item"><div><div class="mini-item-title">Ստուգել հաղորդագրությունները</div><div class="mini-item-sub">Նոր հայտեր և կապի հարցումներ</div></div><i class="bi bi-chevron-right"></i></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h3 class="section-title">Հակիրճ տվյալներ</h3>
+                  <p class="section-text">Քո էջի հիմնական տվյալները</p>
+                </div>
+              </div>
+              <div class="mini-list">
+                <div class="mini-item"><div><div class="mini-item-title">Հրապարակված բաժիններ</div><div class="mini-item-sub">4 բաժին</div></div><strong>Ակտիվ</strong></div>
+                <div class="mini-item"><div><div class="mini-item-title">Կայքում երևացող համար</div><div class="mini-item-sub">+374 99 12 34 56</div></div><i class="bi bi-telephone"></i></div>
+                <div class="mini-item"><div><div class="mini-item-title">Քո հղումը</div><div class="mini-item-sub">lio.am/pvk-fashion</div></div><i class="bi bi-link-45deg"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-profile">
+        <div class="grid two-col">
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Իմ հաշիվը</h3>
+                <p class="section-text">Մուտքի և անձնական տվյալները</p>
+              </div>
+            </div>
+            <div class="profile-box">
+              <div class="profile-row"><div class="profile-key">Անուն Ազգանուն</div><div class="profile-value">Դանիել Համբարձումյան</div></div>
+              <div class="profile-row"><div class="profile-key">Email</div><div class="profile-value">info@pvkfashion.am</div></div>
+              <div class="profile-row"><div class="profile-key">Քո հեռախոսահամարը</div><div class="profile-value">+374 99 00 00 00</div></div>
+              <div class="profile-row"><div class="profile-key">Մասնագետի համարը</div><div class="profile-value">+374 94 00 00 00</div></div>
+              <div class="profile-row"><div class="profile-key">Գրանցման ամսաթիվ</div><div class="profile-value">12 Մարտ 2026</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Հաշվի անվտանգություն</h3>
+                <p class="section-text">Գաղտնաբառ և մուտքի տվյալներ</p>
+              </div>
+            </div>
+            <div class="mini-list">
+              <div class="mini-item"><div><div class="mini-item-title">Գաղտնաբառ</div><div class="mini-item-sub">Վերջին փոփոխությունը՝ 7 օր առաջ</div></div><button class="btn-soft">Փոխել</button></div>
+              <div class="mini-item"><div><div class="mini-item-title">Email հաստատված է</div><div class="mini-item-sub">Քո հաշիվը ակտիվ է</div></div><span class="status success">Հաստատված</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-shop">
+        <div class="grid two-col">
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Իմ խանութը</h3>
+                <p class="section-text">Խանութի հրապարակային տվյալները</p>
+              </div>
+            </div>
+            <div class="profile-box">
+              <div class="profile-row"><div class="profile-key">Բրենդի անուն</div><div class="profile-value">PVK Fashion</div></div>
+              <div class="profile-row"><div class="profile-key">Գործունեություն</div><div class="profile-value">Հագուստ, պայուսակներ, կոշիկներ</div></div>
+              <div class="profile-row"><div class="profile-key">Կայքում երևացող համար</div><div class="profile-value">+374 99 12 34 56</div></div>
+              <div class="profile-row"><div class="profile-key">Հասցե</div><div class="profile-value">Երևան, Կոմիտաս 12</div></div>
+              <div class="profile-row"><div class="profile-key">Հրապարակային հղում</div><div class="profile-value">lio.am/pvk-fashion</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Էջի preview</h3>
+                <p class="section-text">Ինչպես է երևում քո խանութը</p>
+              </div>
+            </div>
+            <div class="shop-preview">
+              <div class="shop-cover">
+                <div class="shop-logo">PVK</div>
+              </div>
+              <div class="shop-body">
+                <div class="shop-name">PVK Fashion</div>
+                <div class="shop-desc">Ժամանակակից օնլայն խանութ հագուստի, պայուսակների և կոշիկների համար։</div>
+                <div class="chips">
+                  <div class="chip">Instagram</div>
+                  <div class="chip">Wildberries</div>
+                  <div class="chip">Telegram</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-products">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">Ապրանքներ</h3>
+              <p class="section-text">Քո խանութի ավելացված ապրանքները</p>
+            </div>
+            <button class="btn-main">+ Նոր ապրանք</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+              <tr>
+                <th>Ապրանք</th>
+                <th>Բաժին</th>
+                <th>Գին</th>
+                <th>Կարգավիճակ</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr><td>White Sneakers</td><td>Կոշիկներ</td><td>18,000 ֏</td><td><span class="status success">Ակտիվ</span></td></tr>
+              <tr><td>Beige Bag</td><td>Պայուսակներ</td><td>14,500 ֏</td><td><span class="status success">Ակտիվ</span></td></tr>
+              <tr><td>Summer Dress</td><td>Հագուստ</td><td>22,000 ֏</td><td><span class="status warning">Սևագիր</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-orders">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">Պատվերներ</h3>
+              <p class="section-text">Բոլոր ստացված հայտերը</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+              <tr>
+                <th>Հաճախորդ</th>
+                <th>Համար</th>
+                <th>Ապրանք</th>
+                <th>Կարգավիճակ</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr><td>Անի Մ.</td><td>+374 98 11 22 33</td><td>White Sneakers</td><td><span class="status primary">Նոր</span></td></tr>
+              <tr><td>Մարիամ Հ.</td><td>+374 93 55 88 99</td><td>Beige Bag</td><td><span class="status success">Հաստատված</span></td></tr>
+              <tr><td>Սոնա Գ.</td><td>+374 99 44 55 66</td><td>Summer Dress</td><td><span class="status warning">Սպասման մեջ</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-categories">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">Բաժիններ</h3>
+              <p class="section-text">Խանութի մենյուի բաժինները</p>
+            </div>
+            <button class="btn-main">+ Նոր բաժին</button>
+          </div>
+          <div class="mini-list">
+            <div class="mini-item"><div><div class="mini-item-title">Հագուստ</div><div class="mini-item-sub">8 ապրանք</div></div><span class="status success">Ակտիվ</span></div>
+            <div class="mini-item"><div><div class="mini-item-title">Կոշիկներ</div><div class="mini-item-sub">6 ապրանք</div></div><span class="status success">Ակտիվ</span></div>
+            <div class="mini-item"><div><div class="mini-item-title">Պայուսակներ</div><div class="mini-item-sub">4 ապրանք</div></div><span class="status success">Ակտիվ</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-messages">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">Հաղորդագրություններ</h3>
+              <p class="section-text">Հաճախորդների հարցումներ և կապի դիմումներ</p>
+            </div>
+          </div>
+          <div class="mini-list">
+            <div class="mini-item"><div><div class="mini-item-title">Ապրանքի առկայության հարց</div><div class="mini-item-sub">Անի Մ. — White Sneakers</div></div><span class="status primary">Նոր</span></div>
+            <div class="mini-item"><div><div class="mini-item-title">Առաքման հարց</div><div class="mini-item-sub">Սոնա Գ. — Երևան</div></div><span class="status warning">Չպատասխանված</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-analytics">
+        <div class="grid three-col">
+          <div class="card stat-card"><div class="label">Այս շաբաթ դիտումներ</div><div class="value">680</div><div class="meta">+12%</div></div>
+          <div class="card stat-card"><div class="label">Սեղմումներ</div><div class="value">214</div><div class="meta">Instagram + Direct links</div></div>
+          <div class="card stat-card"><div class="label">Հարցումներ</div><div class="value">31</div><div class="meta">Վերջին 7 օր</div></div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-subscription">
+        <div class="grid two-col">
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Բաժանորդագրություն</h3>
+                <p class="section-text">Քո ընթացիկ պլանն ու ժամկետները</p>
+              </div>
+            </div>
+            <div class="profile-box">
+              <div class="profile-row"><div class="profile-key">Պլան</div><div class="profile-value">Standard</div></div>
+              <div class="profile-row"><div class="profile-key">Գին</div><div class="profile-value">10,000 ֏ / ամիս</div></div>
+              <div class="profile-row"><div class="profile-key">Վավեր մինչև</div><div class="profile-value">24 Ապրիլ 2026</div></div>
+              <div class="profile-row"><div class="profile-key">Վճարման կարգավիճակ</div><div class="profile-value"><span class="status success">Վճարված</span></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h3 class="section-title">Հաջորդ քայլ</h3>
+                <p class="section-text">Կառավարիր քո պլանը</p>
+              </div>
+            </div>
+            <div class="mini-list">
+              <div class="mini-item"><div><div class="mini-item-title">Թարմացնել պլանը</div><div class="mini-item-sub">Ավելի մեծ փաթեթ</div></div><button class="btn-soft">Ընտրել</button></div>
+              <div class="mini-item"><div><div class="mini-item-title">Վճարման պատմություն</div><div class="mini-item-sub">Նայել բոլոր վճարումները</div></div><button class="btn-soft">Նայել</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-panel" id="panel-settings">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h3 class="section-title">Կարգավորումներ</h3>
+              <p class="section-text">Ընդհանուր կարգավորումներ և համակարգային ընտրանքներ</p>
+            </div>
+          </div>
+          <div class="mini-list">
+            <div class="mini-item"><div><div class="mini-item-title">Լեզու</div><div class="mini-item-sub">Հայերեն</div></div><i class="bi bi-chevron-right"></i></div>
+            <div class="mini-item"><div><div class="mini-item-title">Ծանուցումներ</div><div class="mini-item-sub">Email և dashboard alerts</div></div><i class="bi bi-chevron-right"></i></div>
+            <div class="mini-item"><div><div class="mini-item-title">Դուրս գալ</div><div class="mini-item-sub">Հաշվից դուրս գալ</div></div><i class="bi bi-box-arrow-right"></i></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  const menuButtons = document.querySelectorAll('.menu-btn');
+  const panels = document.querySelectorAll('.content-panel');
+  const pageTitle = document.getElementById('pageTitle');
+  const pageSub = document.getElementById('pageSub');
+  const sidebar = document.getElementById('sidebar');
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+  const panelMeta = {
+    dashboard: { title: 'Dashboard', sub: 'Տես քո խանութի հիմնական վիճակը մեկ տեղում' },
+    profile: { title: 'Իմ հաշիվը', sub: 'Մուտքի և անձնական տվյալները' },
+    shop: { title: 'Իմ խանութը', sub: 'Հրապարակային էջի տվյալները' },
+    products: { title: 'Ապրանքներ', sub: 'Քո խանութի բոլոր ապրանքները' },
+    orders: { title: 'Պատվերներ', sub: 'Բոլոր ստացված հայտերը' },
+    categories: { title: 'Բաժիններ', sub: 'Խանութի մենյուն և կառուցվածք' },
+    messages: { title: 'Հաղորդագրություններ', sub: 'Հաճախորդների հարցումներ' },
+    analytics: { title: 'Վիճակագրություն', sub: 'Դիտումներ, սեղմումներ, հարցումներ' },
+    subscription: { title: 'Բաժանորդագրություն', sub: 'Քո ընթացիկ պլանն ու վճարումները' },
+    settings: { title: 'Կարգավորումներ', sub: 'Ընդհանուր համակարգային ընտրանքներ' }
+  };
+
+  function openPanel(name){
+    menuButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.panel === name));
+    panels.forEach(panel => panel.classList.toggle('active', panel.id === `panel-${name}`));
+    pageTitle.textContent = panelMeta[name].title;
+    pageSub.textContent = panelMeta[name].sub;
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('show');
+  }
+
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', () => openPanel(btn.dataset.panel));
+  });
+
+  mobileMenuBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    sidebarBackdrop.classList.toggle('show');
+  });
+
+  sidebarBackdrop.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('show');
+  });
+</script>
+</body>
+</html>
