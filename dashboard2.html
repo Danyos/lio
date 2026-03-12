@@ -41,7 +41,8 @@
       padding:18px 14px;
       position:sticky;
       top:0;
-      height:100vh;
+      height:100dvh;
+      min-height:100dvh;
       overflow:auto;
     }
 
@@ -226,6 +227,9 @@
       .app{grid-template-columns:1fr}
       .sidebar{
         position:fixed;left:0;top:0;bottom:0;width:min(84vw,280px);z-index:60;
+        height:100dvh;
+        min-height:100dvh;
+        padding-bottom:calc(18px + env(safe-area-inset-bottom, 0px));
         transform:translateX(-100%);transition:.25s ease;
       }
       .sidebar.open{transform:translateX(0)}
