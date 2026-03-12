@@ -521,12 +521,230 @@
                 height: 250px;
             }
         }
+        .shop-header {
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(226,232,240,0.8);
+            transition: .25s ease;
+        }
+
+        .shop-header.scrolled {
+            box-shadow: 0 10px 35px rgba(15,23,42,.08);
+        }
+
+        .shop-header-inner {
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .shop-header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .shop-header-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,.9);
+            box-shadow: var(--shadow);
+            background:
+                    linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.08)),
+                    url("https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=500&q=80") center/cover no-repeat;
+        }
+
+        .shop-header-brand-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .shop-header-brand-text strong {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.1;
+        }
+
+        .shop-header-brand-text span {
+            font-size: .8rem;
+            color: var(--muted);
+            line-height: 1.2;
+        }
+
+        .shop-nav {
+            display: none;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .shop-nav a {
+            color: #334155;
+            font-weight: 700;
+            font-size: .95rem;
+            position: relative;
+        }
+
+        .shop-nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: .2s ease;
+        }
+
+        .shop-nav a:hover::after {
+            width: 100%;
+        }
+
+        .desktop-actions {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .burger-btn {
+            width: 46px;
+            height: 46px;
+            border: 1px solid var(--border);
+            background: #fff;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            padding: 0 11px;
+            box-shadow: var(--shadow);
+        }
+
+        .burger-btn span {
+            width: 100%;
+            height: 2px;
+            background: var(--text);
+            border-radius: 999px;
+            transition: .25s ease;
+        }
+
+        .burger-btn.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .burger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-btn.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+            border-top: 1px solid transparent;
+            background: rgba(255,255,255,0.96);
+        }
+
+        .mobile-menu.open {
+            max-height: 420px;
+            border-top-color: rgba(226,232,240,0.8);
+        }
+
+        .mobile-menu-inner {
+            padding: 14px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mobile-menu-link {
+            padding: 12px 0;
+            color: #334155;
+            font-weight: 700;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        @media (min-width: 992px) {
+            .shop-nav {
+                display: flex;
+            }
+
+            .desktop-actions {
+                display: flex;
+            }
+
+            .burger-btn,
+            .mobile-menu {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
 
 
+<header class="shop-header" id="shopHeader">
+    <div class="container">
+        <div class="shop-header-inner">
+            <a href="#" class="shop-header-brand">
+                <div class="shop-header-logo"></div>
+                <div class="shop-header-brand-text">
+                    <strong>PVK Fashion</strong>
+                    <span>Օնլայն խանութ</span>
+                </div>
+            </a>
 
+            <nav class="shop-nav desktop-nav">
+                <a href="#productsSection">Ապրանքներ</a>
+                <a href="#contactSection">Կապ</a>
+            </nav>
+
+            <div class="desktop-actions">
+                <a href="#" class="btn btn-soft">Instagram</a>
+                <button class="btn btn-main"
+                        data-bs-toggle="modal"
+                        data-bs-target="#orderModal"
+                        data-product="Ընդհանուր պատվեր">
+                    Պատվիրել
+                </button>
+            </div>
+
+            <button class="burger-btn d-lg-none" id="burgerBtn" type="button" aria-label="menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-inner">
+            <a href="#productsSection" class="mobile-menu-link">Ապրանքներ</a>
+            <a href="#mapSection" class="mobile-menu-link">Հասցե</a>
+            <a href="#contactSection" class="mobile-menu-link">Կապ</a>
+            <a href="#" class="mobile-menu-link">Instagram</a>
+
+            <button class="btn btn-main w-100 mt-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#orderModal"
+                    data-product="Ընդհանուր պատվեր">
+                Պատվիրել
+            </button>
+        </div>
+    </div>
+</header>
 <section class="hero">
     <div class="container">
         <div class="cover"></div>
@@ -577,7 +795,7 @@
             </div>
         </div>
 
-        <div class="section-block">
+        <div class="section-block" id="">
             <h2 class="section-title">Մենյու</h2>
             <p class="section-text">Ընտրիր բաժինը և նայիր համապատասխան ապրանքները։</p>
 
@@ -590,7 +808,7 @@
             </div>
         </div>
 
-        <div class="section-block">
+        <div class="section-block" id="productsSection">
             <div class="row g-4" id="productsGrid">
 
                 <!-- beauty -->
@@ -609,18 +827,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">7,500 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Essence Mascara Lash Princess"
-                                            data-price="7,500 ֏"
-                                            data-category="Կոսմետիկա"
-                                            data-desc="Թարթիչների տուշ, որը տալիս է խտություն, երկարություն և արտահայտիչ տեսք։ Հարմար է ամենօրյա օգտագործման համար։"
-                                            data-image="https://dummyjson.com/image/900x700/ffb6c1/000?text=Essence+Mascara"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-4.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -648,18 +857,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">12,000 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Eyeshadow Palette with Mirror"
-                                            data-price="12,000 ֏"
-                                            data-category="Կոսմետիկա"
-                                            data-desc="Գունային հարուստ palette հայելիով՝ հարմար թե բնական, թե ավելի արտահայտիչ շպարի համար։"
-                                            data-image="https://dummyjson.com/image/900x700/fddde6/000?text=Eyeshadow+Palette"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -688,18 +888,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">18,500 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Calvin Klein CK One"
-                                            data-price="18,500 ֏"
-                                            data-category="Օծանելիք"
-                                            data-desc="Թարմ և մաքուր բույր՝ unisex ոճով, հարմար առօրյա օգտագործման համար։"
-                                            data-image="https://dummyjson.com/image/900x700/e0f2fe/000?text=Calvin+Klein+CK"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-2.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -727,18 +918,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">29,000 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Chanel Coco Noir Eau De"
-                                            data-price="29,000 ֏"
-                                            data-category="Օծանելիք"
-                                            data-desc="Շքեղ, էլեգանտ և ավելի խորը բույր՝ հատուկ պահերի և երեկոյան ոճի համար։"
-                                            data-image="https://dummyjson.com/image/900x700/fae8ff/000?text=Chanel+Coco"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-3.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -767,18 +949,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">145,000 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Annibale Colombo Bed"
-                                            data-price="145,000 ֏"
-                                            data-category="Կահույք"
-                                            data-desc="Ժամանակակից ոճի գեղեցիկ կահույք՝ հարմարավետության և ինտերիերի ամբողջական տեսքի համար։"
-                                            data-image="https://dummyjson.com/image/900x700/e2e8f0/000?text=Annibale+Chair"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-4.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -806,18 +979,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">198,000 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Knoll Saarinen Executive"
-                                            data-price="198,000 ֏"
-                                            data-category="Կահույք"
-                                            data-desc="Պրեմիում դասի ինտերիերի կահույք՝ էլեգանտ տեսքով և բարձր հարմարավետությամբ։"
-                                            data-image="https://dummyjson.com/image/900x700/dbeafe/000?text=Sofa"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-4.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -846,18 +1010,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">1,200 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Apple"
-                                            data-price="1,200 ֏"
-                                            data-category="Մթերք"
-                                            data-desc="Թարմ խնձոր՝ առողջարար և ամենօրյա օգտագործման համար։"
-                                            data-image="https://dummyjson.com/image/900x700/fef3c7/000?text=Apple"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-4.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -885,18 +1040,9 @@
                             <div class="product-bottom">
                                 <div class="product-price">1,800 ֏</div>
                                 <div class="product-actions">
-                                    <button class="btn-details"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#productModal"
-                                            data-name="Kiwi"
-                                            data-price="1,800 ֏"
-                                            data-category="Մթերք"
-                                            data-desc="Թարմ kiwi՝ վիտամիններով հարուստ և առողջ սննդակարգի համար հարմար տարբերակ։"
-                                            data-image="https://dummyjson.com/image/900x700/d1fae5/000?text=Kiwi"
-                                            data-instagram="#"
-                                            data-wb="#">
+                                    <a href="more-4.html" class="btn-details" >
                                         Մանրամասն
-                                    </button>
+                                    </a>
                                     <button class="btn-order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#orderModal"
@@ -912,7 +1058,7 @@
             </div>
         </div>
 
-        <div class="section-block">
+        <div class="section-block" id="mapSection">
             <div class="row g-4 align-items-stretch">
                 <div class="col-lg-7">
                     <div class="map-card">
@@ -926,8 +1072,7 @@
                 </div>
 
                 <div class="col-lg-5">
-                    <div class="cta-card h-100 d-flex flex-column justify-content-center">
-                        <h3 class="fw-bold mb-3">Կապ մեզ հետ</h3>
+                    <div class="cta-card h-100 d-flex flex-column justify-content-center" id="contactSection">                        <h3 class="fw-bold mb-3">Կապ մեզ հետ</h3>
                         <p>
                             Եթե ունես հարց ապրանքի, առաքման կամ առկայության մասին,
                             կարող ես թողնել պատվերի հայտ, և մենք շուտով կապ կհաստատենք քեզ հետ։
@@ -948,38 +1093,6 @@
     </div>
 </section>
 
-<!-- Product Modal -->
-<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold">Ապրանքի մանրամասներ</h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <img id="modalImage" class="modal-product-image" src="" alt="Product">
-
-                <div class="text-uppercase fw-bold text-primary small mb-2" id="modalCategory"></div>
-                <h3 id="modalName" class="fw-bold mb-2">Ապրանքի անուն</h3>
-                <div id="modalPrice" class="modal-price">0 ֏</div>
-                <p id="modalDesc" class="modal-desc">Մանրամասները այստեղ են։</p>
-
-                <div class="modal-links">
-                    <a id="modalInstagram" href="#" target="_blank"><i class="bi bi-instagram"></i>Instagram</a>
-                    <a id="modalWB" href="#" target="_blank"><i class="bi bi-globe2"></i>Wildberries</a>
-                </div>
-
-                <button class="btn btn-main w-100 py-3 rounded-4"
-                        id="openOrderFromProduct"
-                        data-bs-toggle="modal"
-                        data-bs-target="#orderModal"
-                        data-bs-dismiss="modal">
-                    Պատվիրել այս ապրանքը
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Order Modal -->
 <div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
@@ -991,29 +1104,18 @@
             </div>
             <div class="modal-body">
                 <form id="orderForm">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Ընտրված ապրանք</label>
-                        <input type="text" id="selectedProductInput" class="form-control" readonly>
-                    </div>
+
+                        <input type="text"  hidden="" id="selectedProductInput" class="form-control" readonly>
+
 
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Անուն</label>
-                        <input type="text" class="form-control" placeholder="Գրեք ձեր անունը" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Ազգանուն</label>
-                        <input type="text" class="form-control" placeholder="Գրեք ձեր ազգանունը" required>
+                        <label class="form-label fw-semibold">Անուն Ազգանուն</label>
+                        <input type="text" class="form-control" placeholder="Գրեք ձեր Անուն Ազգանուն" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Հեռախոսահամար</label>
                         <input type="tel" class="form-control" placeholder="Գրեք ձեր հեռախոսահամարը" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Նշում</label>
-                        <textarea class="form-control" rows="4" placeholder="Ցանկության դեպքում նշում գրեք"></textarea>
                     </div>
 
                     <button type="submit" class="submit-btn">Ուղարկել պատվերը</button>
@@ -1121,6 +1223,33 @@
             orderForm.reset();
             selectedProductInput.value = '';
         }, 350);
+    });
+</script>
+<script>
+    const burgerBtn = document.getElementById('burgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const shopHeader = document.getElementById('shopHeader');
+
+    if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', () => {
+            burgerBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.mobile-menu-link').forEach(link => {
+            link.addEventListener('click', () => {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('open');
+            });
+        });
+    }
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            shopHeader.classList.add('scrolled');
+        } else {
+            shopHeader.classList.remove('scrolled');
+        }
     });
 </script>
 </body>
